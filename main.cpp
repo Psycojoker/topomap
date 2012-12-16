@@ -10,15 +10,15 @@
 
 using namespace std;
 
-void w2fBIG(GlobalMap &globalMap, int lsize=1025, int gsizex=3, int gsizey=3)
+void w2fBIG(GlobalMap &globalMap, int number, int lsize=1025, int gsizex=3, int gsizey=3)
 {
 	short z;
-		
+
 	RGBApixel color;
 	BMP image;
 	image.SetSize(gsizex*lsize,gsizey*lsize);
 	image.SetBitDepth(32);
-	
+
 	for(int b=0; b<gsizey; b++)
 	{
 		for(int a=0; a<gsizex; a++)
@@ -70,7 +70,9 @@ void w2fBIG(GlobalMap &globalMap, int lsize=1025, int gsizex=3, int gsizey=3)
 			}
 		}
 	}
-	image.WriteToFile("BIG.bmp");
+	char fileName[12];
+	sprintf(fileName, "map_%d.bmp", number);
+	image.WriteToFile(fileName);
 }
 
 void w2f(GlobalMap &globalMap, int i, int j, int size=1025)
@@ -129,21 +131,23 @@ void w2f(GlobalMap &globalMap, int i, int j, int size=1025)
 
 int main()
 {
-	srand(time(NULL));
-	
-	GlobalMap globalMap;
-	
-	for(int j=0; j<3; j++)
-		for(int i=0; i<3; i++)
-		{
-			cout << i << "," << j << endl;
-			globalMap.genLocalMap(i,j);
-			//w2f(globalMap, i,j);
-			//globalMap.exportInMeters(i,j);
-			cout << endl;
-		}
-	w2fBIG(globalMap);
-	
+	for (int k=0; k<10; k++)
+	{
+		srand(time(NULL));
+		
+		GlobalMap globalMap;
+		
+		for(int j=0; j<3; j++)
+			for(int i=0; i<3; i++)
+			{
+				cout << i << "," << j << endl;
+				globalMap.genLocalMap(i,j);
+				//w2f(globalMap, i,j);
+				//globalMap.exportInMeters(i,j);
+				cout << endl;
+			}
+		w2fBIG(globalMap, k);
+	}
 	//globalMap.genLocalMap(1,1);
 	//w2f(globalMap, 1,1);
 	cout << "Done!" << endl;
